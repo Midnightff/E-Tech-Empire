@@ -1,5 +1,8 @@
 from django.db import models
 
+from pedido.models import Pedido
+from producto.models import Producto
+
 # Create your models here.
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)

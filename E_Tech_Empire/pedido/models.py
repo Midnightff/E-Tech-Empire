@@ -1,5 +1,8 @@
 from django.db import models
 
+from metodo_pago.models import MetodoPago
+from cliente.models import Cliente
+
 # Create your models here.
 class Pedido(models.Model):
     ESTADOS = [

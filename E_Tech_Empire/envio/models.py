@@ -1,5 +1,7 @@
 from django.db import models
 
+from pedido.models import Pedido
+
 # Create your models here.
 class Envio(models.Model):
     ESTADOS_ENVIO = [
