@@ -39,7 +39,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'tienda_e_tech_empire'
+    'categoria',
+    'marca',
+    'proveedor',
+    'producto',
+    'cliente',
+    'metodo_pago',
+    'pedido',
+    'detalle_pedido',
+    'envio',
 ]
 
 MIDDLEWARE = [
