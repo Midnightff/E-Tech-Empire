@@ -1,5 +1,9 @@
 from django.db import models
 
+from categoria.models import Categoria
+from marca.models import Marca
+from proveedor.models import Proveedor
+
 # Create your models here.
 
 class Producto(models.Model):
