@@ -1,0 +1,124 @@
+{% extends 'layout/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Categorías</h1>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#categoriaModal">
+        Nueva Categoría
+    </button>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categoria in categorias %}
+            <tr>
+                <td>{{ categoria.nombre }}</td>
+                <td>{{ categoria.descripcion }}</td>
+                <td>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#editCategoriaModal{{ categoria.pk }}">Editar</button>
+                    <form action="{% url 'categoria_delete' categoria.pk %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button class="btn btn-danger" data-toggle="modal" data-target="#eliminarModal" 
+                        data-url="{% url 'categoria_delete' categoria.id %}">Eliminar</button>
+                    
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal para crear categoría -->
+<div class="modal fade" id="categoriaModal" tabindex="-1" aria-labelledby="categoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="categoriaModalLabel">Nueva Categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'categoria_create' %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="id_nombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="id_nombre" name="nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="id_descripcion" name="descripcion" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para editar categoría -->
+{% for categoria in categorias %}
+<div class="modal fade" id="editCategoriaModal{{ categoria.pk }}" tabindex="-1" aria-labelledby="editCategoriaModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoriaModalLabel">Editar Categoría</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{% url 'categoria_update' categoria.pk %}" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="id_nombre_{{ categoria.pk }}" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="id_nombre_{{ categoria.pk }}" name="nombre" value="{{ categoria.nombre }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_descripcion_{{ categoria.pk }}" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="id_descripcion_{{ categoria.pk }}" name="descripcion" required>{{ categoria.descripcion }}</textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+<script>
+    document.getElementById('confirmarEliminacion').addEventListener('click', function() {
+        const url = this.getAttribute('data-url');
+
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esto.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Redirige a la URL de eliminación
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+<script>
+    $(document).ready( function () {
+    $('#Table').DataTable();
+} );
+</script>
+
+{% endblock %}
