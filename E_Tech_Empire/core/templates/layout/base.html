@@ -194,7 +194,38 @@
         <script src="{% static 'admin/js/sb-admin-2.min.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-  
+
+        <script>
+            // Crear una lista de mensajes para SweetAlert
+            var messages = [
+                {% for message in messages %}
+                    {
+                        "message": "{{ message|escapejs }}",
+                        "tags": "{{ message.tags }}"
+                    },
+                {% endfor %}
+            ];
+        
+      
+            messages.forEach(function(msg) {
+                if (msg.tags == 'error') {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: msg.message,
+                        icon: 'error',
+                        confirmButtonText: 'Aceptar'
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Éxito!',
+                        text: msg.message,
+                        icon: 'success',
+                        confirmButtonText: 'Aceptar'
+                    });
+                }
+            });
+        </script>
+        
    
 
 </body>
