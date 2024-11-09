@@ -28,7 +28,7 @@
                             <a href="{% url 'categoria_update' categoria.pk %}" style="background-color: #6528e0; color: white;" class="btn btn-sm"><i class="fas fa-edit"></i></a>
                             <form action="{% url 'categoria_delete' categoria.pk %}" method="post" style="display:inline;" onsubmit="return confirmDelete(event, this);">
                                 {% csrf_token %}
-                                <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
                             </form>
                         </td>
                     </tr>
