@@ -8,7 +8,7 @@ from .models import Estado
 
 def estado_list(request):
     estados = Estado.objects.all()  # Obtiene todos los estados
-    return render(request, 'estado/estado_list.html', {'estados': estados})
+    return render(request, 'estado_list.html', {'estados': estados})
 
 def estado_create(request):
     if request.method == 'POST':
@@ -21,7 +21,7 @@ def estado_create(request):
             messages.error(request, "Hubo un error al crear el estado. Verifica los datos.")
     else:
         form = EstadoForm()
-    return render(request, 'estado/estado_form.html', {'form': form, 'title': 'Crear Estado'})
+    return render(request, 'estado_form.html', {'form': form, 'title': 'Crear Estado'})
 
 def estado_edit(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
@@ -35,7 +35,7 @@ def estado_edit(request, pk):
             messages.error(request, "Hubo un error al editar el estado. Verifica los datos.")
     else:
         form = EstadoForm(instance=estado)
-    return render(request, 'estado/estado_form.html', {'form': form, 'title': 'Editar Estado'})
+    return render(request, 'estado_form.html', {'form': form, 'title': 'Editar Estado'})
 
 def estado_delete(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
@@ -43,4 +43,4 @@ def estado_delete(request, pk):
         estado.delete()
         messages.success(request, "Estado eliminado correctamente.")
         return redirect('estado_list')
-    return render(request, 'estado/estado_confirm_delete.html', {'estado': estado})
+    messages.error(request, 'Error al eliminar el estado.')

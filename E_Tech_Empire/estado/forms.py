@@ -9,7 +9,7 @@ class EstadoForm(forms.ModelForm):
         model = Estado
         fields = ['nombre']  # Incluimos el campo del modelo
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del estado'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del estado', 'required': 'required'}),
         }
 
     def clean_nombre(self):

@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('categoria.urls')),
     path('', include('proveedor.urls')),
     path('', include('marca.urls')),
+    path('', include('estado.urls')),
 ]
