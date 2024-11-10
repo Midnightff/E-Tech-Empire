@@ -4,7 +4,13 @@ from .models import Proveedor
 class ProveedorForm(forms.ModelForm):
     class Meta:
         model = Proveedor
-        fields = ['nombre', 'direccion', 'telefono', 'email']  # Incluimos los campos del modelo
+        fields = ['nombre', 'direccion', 'telefono', 'email']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nombre del proveedor', 'required': 'required'}),
+            'direccion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección del proveedor', 'required': 'required'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono del proveedor', 'required': 'required'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Correo electrónico del proveedor', 'required': 'required'}),
+        }
 
     def clean_telefono(self):
         telefono = self.cleaned_data.get('telefono')

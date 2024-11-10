@@ -6,7 +6,7 @@ from .models import Proveedor
 # Vista para listar todos los proveedores
 def proveedor_list(request):
     proveedores = Proveedor.objects.all()  # Obtiene todos los proveedores
-    return render(request, 'proveedor/proveedor_list.html', {'proveedores': proveedores})
+    return render(request, 'proveedor_list.html', {'proveedores': proveedores})
 
 # Vista para crear un nuevo proveedor
 def proveedor_create(request):
@@ -20,7 +20,7 @@ def proveedor_create(request):
             messages.error(request, "Hubo un error al crear el proveedor. Verifica los datos.")
     else:
         form = ProveedorForm()
-    return render(request, 'proveedor/proveedor_form.html', {'form': form, 'title': 'Crear Proveedor'})
+    return render(request, 'proveedor_form.html', {'form': form, 'title': 'Crear Proveedor'})
 
 # Vista para editar un proveedor existente
 def proveedor_edit(request, pk):
@@ -35,7 +35,7 @@ def proveedor_edit(request, pk):
             messages.error(request, "Hubo un error al editar el proveedor. Verifica los datos.")
     else:
         form = ProveedorForm(instance=proveedor)  # Cargar el formulario con los datos del proveedor
-    return render(request, 'proveedor/proveedor_form.html', {'form': form, 'title': 'Editar Proveedor'})
+    return render(request, 'proveedor_form.html', {'form': form, 'title': 'Editar Proveedor'})
 
 # Vista para eliminar un proveedor
 def proveedor_delete(request, pk):
@@ -44,4 +44,4 @@ def proveedor_delete(request, pk):
         proveedor.delete()
         messages.success(request, "Proveedor eliminado correctamente.")
         return redirect('proveedor_list')
-    return render(request, 'proveedor/proveedor_confirm_delete.html', {'proveedor': proveedor})
+    messages.error(request, 'Error al eliminar el proveedor.')
