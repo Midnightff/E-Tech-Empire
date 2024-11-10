@@ -42,4 +42,4 @@ def marca_delete(request, pk):
         marca.delete()
         messages.success(request, "Marca eliminada correctamente.")
         return redirect('marca_list')
-        return render(request, 'marca_confirm_delete.html', {'marca': marca})
+    messages.error(request, 'Error al eliminar la marca.')
