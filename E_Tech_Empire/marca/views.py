@@ -7,7 +7,7 @@ from .models import Marca
 
 def marca_list(request):
     marcas = Marca.objects.all()  # Obtiene todas las marcas
-    return render(request, 'marca/marca_list.html', {'marcas': marcas})
+    return render(request, 'marca_list.html', {'marcas': marcas})
 
 def marca_create(request):
     if request.method == 'POST':
@@ -20,7 +20,7 @@ def marca_create(request):
             messages.error(request, "Hubo un error al crear la marca. Verifica los datos.")
     else:
         form = MarcaForm()
-    return render(request, 'marca/marca_form.html', {'form': form, 'title': 'Crear Marca'})
+    return render(request, 'marca_form.html', {'form': form, 'title': 'Crear Marca'})
 
 def marca_edit(request, pk):
     marca = get_object_or_404(Marca, pk=pk)
@@ -34,7 +34,7 @@ def marca_edit(request, pk):
             messages.error(request, "Hubo un error al editar la marca. Verifica los datos.")
     else:
         form = MarcaForm(instance=marca)
-    return render(request, 'marca/marca_form.html', {'form': form, 'title': 'Editar Marca'})
+    return render(request, 'marca_form.html', {'form': form, 'title': 'Editar Marca'})
 
 def marca_delete(request, pk):
     marca = get_object_or_404(Marca, pk=pk)
@@ -42,4 +42,4 @@ def marca_delete(request, pk):
         marca.delete()
         messages.success(request, "Marca eliminada correctamente.")
         return redirect('marca_list')
-    return render(request, 'marca/marca_confirm_delete.html', {'marca': marca})
+        return render(request, 'marca_confirm_delete.html', {'marca': marca})

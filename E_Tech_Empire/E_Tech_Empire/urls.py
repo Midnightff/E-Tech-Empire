@@ -24,4 +24,5 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('', include('categoria.urls')),
     path('', include('proveedor.urls')),
+    path('', include('marca.urls')),
 ]

@@ -4,10 +4,14 @@ from .models import Marca
 class MarcaForm(forms.ModelForm):
     class Meta:
         model = Marca
-        fields = ['nombre'] 
+        fields = ['nombre']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese el nombre de la marca', 'required': 'required'})
+        }
 
     def clean_nombre(self):
         nombre = self.cleaned_data.get('nombre')
+        
 
        
         if not nombre:
