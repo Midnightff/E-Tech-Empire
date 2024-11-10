@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'detalle_pedido',
     'envio',
     'core',
+    'estado',
 ]
 
 MIDDLEWARE = [
