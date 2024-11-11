@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('proveedor.urls')),
     path('', include('marca.urls')),
     path('', include('estado.urls')),
+    path('', include('metodo_pago.urls')),
 ]
