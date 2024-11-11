@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include('metodo_pago.urls')),
     path('carrito/', views.carrito, name='carrito'),
     path('', include('producto.urls')),
+    path('', include('pedido.urls')),
 ]
 
 if settings.DEBUG:
