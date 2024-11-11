@@ -6,3 +6,6 @@ def dashboard(request):
 
 def index(request):
     return render(request, 'client/index.html')
+
+def carrito(request):
+    return render(request, 'client/carrito.html')

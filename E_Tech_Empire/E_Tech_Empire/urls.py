@@ -27,4 +27,5 @@ urlpatterns = [
     path('', include('marca.urls')),
     path('', include('estado.urls')),
     path('', include('metodo_pago.urls')),
+    path('carrito/', views.carrito, name='carrito'),
 ]
