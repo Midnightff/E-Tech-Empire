@@ -7,5 +7,6 @@ urlpatterns = [
     path('pedido/crear/', views.crear_pedido, name='crear_pedido'),  
     path('pedido/actualizar/<int:pk>/', views.actualizar_pedido, name='actualizar_pedido'), 
     path('pedido/eliminar/<int:pk>/', views.eliminar_pedido, name='eliminar_pedido'),
-    path('api/precio_producto/<int:producto_id>/', views.obtener_precio_producto, name='obtener_precio_producto'),  # Nueva URL para obtener el precio 
+    path('api/precio_producto/<int:producto_id>/', views.obtener_precio_producto, name='obtener_precio_producto'), 
+    path('api/crear_pedido/', views.crear_pedido_api, name='pedido_api'),
 ]

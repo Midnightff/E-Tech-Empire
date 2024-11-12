@@ -81,17 +81,6 @@
                     <h1 class="logo"><a href="/">E-Market-Tech</a></h1>
                 </div>
 
-                <div class="container-user">
-                    <i class="fa-solid fa-user"></i>
-                    <i class="fa-solid fa-basket-shopping">
-                        <a href="{% url 'carrito' %}">
-                    </i>
-                    <div class="content-shopping-cart">
-                        <span class="text">Carrito</span>
-                        <a href="{% url 'carrito' %}">
-                        <span class="number">(0)</span>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -114,19 +103,21 @@
                     </button>
                 </form>
         
-                <a href="#" class="btn btn-primary">Iniciar Sesión</a>
-        
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Usuario
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">Perfil</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a></li>
-                    </ul>
-                </div>
-                <form id="logout-form" action="#" method="POST" class="d-none">
-               
+                {% if user.is_authenticated %}
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ user.username }}
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <li><a class="dropdown-item" href="#">Perfil</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn btn-primary">Iniciar Sesión</a>
+                {% endif %}
+                <form id="logout-form" action="{% url 'logout' %}" method="POST" class="d-none">
+                    {% csrf_token %}
                 </form>
            
             </nav>
@@ -300,6 +291,47 @@
             $(".wish-icon i").click(function(){
                 $(this).toggleClass("fa-heart fa-heart-o");
             });
+
+            // Manejar el clic en el botón de comprar
+            $(document).on('click', '.btn-primary.btn-block', function() {
+                {% if user.is_authenticated %}
+                    console.log('Usuario logueado');
+                    const productoId = $(this).data('id'); // Obtener el ID del producto desde el atributo data-id
+                    $.ajax({
+                        url: '/api/crear_pedido/', // URL para crear el pedido
+                        method: 'POST',
+                        contentType: 'application/json', // Especificar el tipo de contenido
+                        data: JSON.stringify({
+                            'producto_id': productoId,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}' // Incluir el token CSRF
+                        }),
+                        success: function(response) {
+                            if (response.exito) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Pedido creado',
+                                    text: response.mensaje, // Mensaje de éxito desde la respuesta
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: response.error, // Mensaje de error desde la respuesta
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Ocurrió un error al crear el pedido.',
+                            });
+                        }
+                    });
+                {% else %}
+                    window.location.href = "{% url 'login' %}"; // Redirigir al login
+                {% endif %}
+            });
         });	
         </script>
         <script>
@@ -327,7 +359,7 @@
                                                 <i class="fa fa-star-o"></i>
                                             </div>
                                             <p class="item-price mb-2">$${producto.precio}</p>
-                                            <a href="#" class="btn btn-primary btn-block">Añadir al carrito</a>
+                                            <a href="#" class="btn btn-primary btn-block" data-id="${producto.id}">Comprar</a>
                                         </div>
                                     </div>
                                 </div>`;

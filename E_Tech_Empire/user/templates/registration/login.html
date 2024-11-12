@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+   
+    <section class="p-3 p-md-4 p-xl-5">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-6 bg-white shadow-lg rounded">
+              <div class="p-3 p-md-4 p-xl-5">
+                <div class="row">
+                  <div class="col-12 mb-5">
+                    <h2 class="h3">Iniciar Sesión</h2>
+                    <h3 class="fs-6 fw-normal text-secondary m-0">Ingresa tus datos para acceder</h3>
+                  </div>
+                </div>
+                <form method="post" novalidate>
+                  {% csrf_token %}
+                  <div class="row gy-3 gy-md-4 overflow-hidden">
+                    <!-- Renderizar los campos del formulario -->
+                    {% for field in form %}
+                      <div class="col-12">
+                        <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }} <span class="text-danger">*</span></label>
+                        {{ field }}
+                        {{ field.errors }}
+                      </div>
+                    {% endfor %}
+                    
+                    <!-- Botón de envío -->
+                    <div class="col-12">
+                      <div class="d-grid">
+                        <button type="submit" class="btn btn-primary mt-3">Ingresar</button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+      
+                <!-- Registrar cuenta si no tiene una cuenta -->
+                <div class="row">
+                  <div class="col-12">
+                    <hr class="mt-5 mb-4 border-secondary-subtle">
+                    <p class="m-0 text-secondary text-end">¿No tienes una cuenta? <a href="{% url 'registro' %}" class="link-primary text-decoration-none">Regístrate</a></p>
+                  </div>
+                </div>
+      
+                <!-- Opciones de inicio de sesión con redes sociales -->
+                <div class="row">
+                  <div class="col-12">
+                    <p class="mt-5 mb-4">O inicia sesión con</p>
+                    <div class="d-flex gap-3 flex-column flex-xl-row">
+                      <a href="#!" class="btn btn-outline-primary">Google</a>
+                      <a href="#!" class="btn btn-outline-primary">Facebook</a>
+                      <a href="#!" class="btn btn-outline-primary">Twitter</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </section>
+    
+    <!-- Scripts opcionales de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
