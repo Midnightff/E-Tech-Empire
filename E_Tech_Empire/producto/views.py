@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .models import Producto
 from .forms import ProductoForm
+from django.http import JsonResponse
 
 def producto_list(request):
     productos = Producto.objects.all()
@@ -47,3 +48,16 @@ def producto_delete(request, pk):
     messages.error(request, 'Error al eliminar el producto.')
 
 
+def productos_cliente(request):
+    productos = Producto.objects.all()
+    productos_data = [
+        {
+            'id': producto.id,
+            'nombre': producto.nombre,
+            'precio': producto.precio,
+            'descripcion': producto.descripcion,
+            'imagen': producto.imagen.url if producto.imagen else None,
+        } 
+        for producto in productos
+    ]
+    return JsonResponse({'productos': productos_data})
