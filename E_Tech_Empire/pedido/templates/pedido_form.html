@@ -6,7 +6,47 @@
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-success">Guardar</button>
-        <a href="{% url 'pedido_list' %}" class="btn btn-secondary">Cancelar</a>
+        <a href="{% url 'lista_pedidos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+<script>
+    document.getElementById('id_producto').addEventListener('change', function() {
+        var productoId = this.value;
+        obtenerPrecioProducto(productoId).then(function(precio) {
+            document.getElementById('id_precio_unitario').value = precio;
+            calcularTotal();  // Calcula el total cuando se selecciona un producto
+        }).catch(function(error) {
+            console.error('Error al obtener el precio del producto:', error);
+        });
+    });
+
+    document.getElementById('id_cantidad').addEventListener('input', function() {
+        calcularTotal();  // Calcula el total cuando cambia la cantidad
+    });
+
+    function calcularTotal() {
+        var precioUnitario = parseFloat(document.getElementById('id_precio_unitario').value) || 0;
+        var cantidad = parseFloat(document.getElementById('id_cantidad').value) || 0;
+        var total = precioUnitario * cantidad;
+        document.getElementById('id_total').value = total.toFixed(2);  // Muestra el total con dos decimales
+    }
+
+    function obtenerPrecioProducto(productoId) {
+        return new Promise(function(resolve, reject) {
+            fetch(`/api/precio_producto/${productoId}/`)  // Cambia esta URL según tu configuración
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la red');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    resolve(data.precio);  // Asegúrate de que la respuesta JSON tenga la propiedad 'precio'
+                })
+                .catch(error => {
+                    reject(error);
+                });
+        });
+    }
+</script>
 {% endblock %}

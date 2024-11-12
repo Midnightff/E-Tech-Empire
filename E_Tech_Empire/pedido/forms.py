@@ -1,31 +1,25 @@
 from django import forms
-from .models import Pedido
-from metodo_pago.models import MetodoPago
-from estado.models import Estado
-from user.models import CustomUser
+from django.utils import timezone
+from .models import Pedido, Producto
 
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['codigo', 'fecha', 'total', 'cliente', 'estado', 'metodo_pago', 'fecha_pago']
+        fields = ['cliente', 'estado', 'metodo_pago', 'producto', 'cantidad', 'precio_unitario', 'total']
+        exclude = ['codigo', 'fecha', 'fecha_pago']  # Eliminamos 'fecha_pago' de los campos visibles
         widgets = {
-            'fecha': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
-            'total': forms.NumberInput(attrs={'class': 'form-control'}),
-            'codigo': forms.TextInput(attrs={'class': 'form-control'}),
             'cliente': forms.Select(attrs={'class': 'form-control'}),
             'estado': forms.Select(attrs={'class': 'form-control'}),
             'metodo_pago': forms.Select(attrs={'class': 'form-control'}),
-            'fecha_pago': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'producto': forms.Select(attrs={'class': 'form-control', 'id': 'id_producto'}),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_cantidad'}),
+            'precio_unitario': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_precio_unitario', 'readonly': 'readonly'}),
+            'total': forms.NumberInput(attrs={'class': 'form-control', 'id': 'id_total', 'readonly': 'readonly'}),
         }
 
-    def clean_codigo(self):
-        codigo = self.cleaned_data.get('codigo')
-        if not codigo:
-            raise forms.ValidationError("El código del pedido es obligatorio.")
-        return codigo
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.instance.pk:  
+            self.instance.fecha_pago = timezone.now()
 
-    def clean_total(self):
-        total = self.cleaned_data.get('total')
-        if total <= 0:
-            raise forms.ValidationError("El total debe ser mayor a 0.")
-        return total
+
