@@ -5,11 +5,17 @@ from django.contrib import messages
 from .models import Producto
 from .forms import ProductoForm
 from django.http import JsonResponse
+from user.decorators import superuser_required
+from django.contrib.auth.decorators import login_required
 
+@superuser_required
+@login_required 
 def producto_list(request):
     productos = Producto.objects.all()
     return render(request, 'producto_list.html', {'productos': productos, 'title': 'Listado de Productos'})
 
+@superuser_required
+@login_required 
 def producto_create(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST, request.FILES)
@@ -25,6 +31,8 @@ def producto_create(request):
         form = ProductoForm()
     return render(request, 'producto_form.html', {'form': form, 'title': 'Crear Producto'})
 
+@superuser_required
+@login_required 
 def producto_update(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
@@ -39,6 +47,8 @@ def producto_update(request, pk):
         form = ProductoForm(instance=producto)
     return render(request, 'producto_form.html', {'form': form, 'title': 'Editar Producto'})
 
+@superuser_required
+@login_required 
 def producto_delete(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':

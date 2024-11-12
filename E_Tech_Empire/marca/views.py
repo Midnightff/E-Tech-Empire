@@ -4,11 +4,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import MarcaForm
 from .models import Marca
+from user.decorators import superuser_required
+from django.contrib.auth.decorators import login_required
 
+@superuser_required
+@login_required
 def marca_list(request):
     marcas = Marca.objects.all()  # Obtiene todas las marcas
     return render(request, 'marca_list.html', {'marcas': marcas})
 
+@superuser_required
+@login_required
 def marca_create(request):
     if request.method == 'POST':
         form = MarcaForm(request.POST)
@@ -22,6 +28,9 @@ def marca_create(request):
         form = MarcaForm()
     return render(request, 'marca_form.html', {'form': form, 'title': 'Crear Marca'})
 
+
+@superuser_required
+@login_required
 def marca_edit(request, pk):
     marca = get_object_or_404(Marca, pk=pk)
     if request.method == 'POST':
@@ -36,6 +45,9 @@ def marca_edit(request, pk):
         form = MarcaForm(instance=marca)
     return render(request, 'marca_form.html', {'form': form, 'title': 'Editar Marca'})
 
+
+@superuser_required
+@login_required
 def marca_delete(request, pk):
     marca = get_object_or_404(Marca, pk=pk)
     if request.method == 'POST':

@@ -5,11 +5,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import EstadoForm
 from .models import Estado
+from user.decorators import superuser_required
+from django.contrib.auth.decorators import login_required
 
+@superuser_required
+@login_required
 def estado_list(request):
     estados = Estado.objects.all()  # Obtiene todos los estados
     return render(request, 'estado_list.html', {'estados': estados})
 
+@superuser_required
+@login_required
 def estado_create(request):
     if request.method == 'POST':
         form = EstadoForm(request.POST)
@@ -23,6 +29,8 @@ def estado_create(request):
         form = EstadoForm()
     return render(request, 'estado_form.html', {'form': form, 'title': 'Crear Estado'})
 
+@superuser_required
+@login_required
 def estado_edit(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     if request.method == 'POST':
@@ -37,6 +45,8 @@ def estado_edit(request, pk):
         form = EstadoForm(instance=estado)
     return render(request, 'estado_form.html', {'form': form, 'title': 'Editar Estado'})
 
+@superuser_required
+@login_required
 def estado_delete(request, pk):
     estado = get_object_or_404(Estado, pk=pk)
     if request.method == 'POST':

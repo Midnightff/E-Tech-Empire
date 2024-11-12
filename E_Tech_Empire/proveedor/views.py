@@ -2,13 +2,20 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import ProveedorForm
 from .models import Proveedor
+from user.decorators import superuser_required
+from django.contrib.auth.decorators import login_required
+
 
 # Vista para listar todos los proveedores
+@superuser_required
+@login_required
 def proveedor_list(request):
     proveedores = Proveedor.objects.all()  # Obtiene todos los proveedores
     return render(request, 'proveedor_list.html', {'proveedores': proveedores})
 
 # Vista para crear un nuevo proveedor
+@superuser_required
+@login_required
 def proveedor_create(request):
     if request.method == 'POST':
         form = ProveedorForm(request.POST)
@@ -23,6 +30,8 @@ def proveedor_create(request):
     return render(request, 'proveedor_form.html', {'form': form, 'title': 'Crear Proveedor'})
 
 # Vista para editar un proveedor existente
+@superuser_required
+@login_required
 def proveedor_edit(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     if request.method == 'POST':
@@ -38,6 +47,8 @@ def proveedor_edit(request, pk):
     return render(request, 'proveedor_form.html', {'form': form, 'title': 'Editar Proveedor'})
 
 # Vista para eliminar un proveedor
+@superuser_required
+@login_required
 def proveedor_delete(request, pk):
     proveedor = get_object_or_404(Proveedor, pk=pk)
     if request.method == 'POST':
